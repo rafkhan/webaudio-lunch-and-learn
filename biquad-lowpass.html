@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.onload = function() {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        var context = new webkitAudioContext;
+        var el = document.getElementById('audio');
+        var source = context.createMediaElementSource(el);
+        
+        window.filterNode = context.createBiquadFilter();
+        filterNode.type = 0;
+        filterNode.frequency.value = 10000000;
+        
+        source.connect(filterNode);
+        filterNode.connect(context.destination);
+        
+        el.play();
+      }
+    </script>
+  </head>
+  <body>
+    <audio src="/audio/beethoven_symph7_mvt2.mp3"
+           controls="controls"
+           id="audio">
+      Your browser doesn't support the audio tag q_q
+    </audio>
+  </body>
+</html>
+
+
+

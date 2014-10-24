@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.onload = function() {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        var context = new webkitAudioContext;
+              var merger = context.createChannelMerger(2);
+
+        
+        var el1 = document.getElementById('audio1');
+        var src1 = context.createMediaElementSource(el1);
+        window.gain1 = context.createGain();
+
+        var el2 = document.getElementById('audio2');
+        var src2 = context.createMediaElementSource(el2);
+        window.gain2 = context.createGain();
+
+  
+        src1.connect(gain1);
+        src2.connect(gain2);
+
+        gain1.connect(merger);
+        gain2.connect(merger);
+
+        window.masterGain = context.createGain();
+        merger.connect(masterGain);
+        
+        masterGain.connect(context.destination);
+        
+        //el1.play();
+        //el2.play();
+      }
+    </script>
+  </head>
+  <body>
+    <audio src="audio/beethoven_symph7_mvt2.mp3"
+           controls="controls"
+           id="audio1">
+      Your browser doesn't support the audio tag q_q
+    </audio>
+
+    <audio src="audio/Rude Boy - Hannah Wants & Chris Lorenzo.wav"
+           controls="controls"
+           id="audio2">
+      You suck and probably use Internet Explorer.
+    </audio>
+  </body>
+</html>
+
+
+
+
+

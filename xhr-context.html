@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.onload = function() {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        var context = new webkitAudioContext;
+
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = "arraybuffer"; // THIS IS NECESSARY
+        oReq.onload = function() {
+          context.decodeAudioData(oReq.response, function(buffer) {
+            var source = context.createBufferSource();
+            source.buffer = buffer;
+            source.connect(context.destination);
+            source.start(0);
+            console.log('started track');
+          }, console.log);
+        };
+
+        oReq.open("GET", "/audio/beethoven_symph7_mvt2.wav", true);
+        oReq.send();
+      }
+    </script>
+  </head>
+  <body>
+    hi
+  </body>
+</html>
+
+

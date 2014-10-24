@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.onload = function() {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        var context = new webkitAudioContext;
+        var el = document.getElementById('audio');
+        var source = context.createMediaElementSource(el);
+
+        function visualize(song, canvas) {
+          var HEIGHT = canvas.height;
+          var WIDTH = canvas.width;
+          var drawContext = canvas.getContext('2d');
+          var analyser = context.createAnalyser();
+          var freqDomain = new Uint8Array(analyser.frequencyBinCount);
+
+          song.connect(analyser);
+
+          //TODO kill
+          var draw = function() {
+            drawContext.fillStyle = "#000";
+            drawContext.fillRect(0, 0, WIDTH, HEIGHT);
+
+            analyser.getByteFrequencyData(freqDomain);
+            for (var i = 0; i < analyser.frequencyBinCount; i++) {
+              var value = freqDomain[i];
+              var percent = value / 256;
+              var height = HEIGHT * percent;
+              var offset = HEIGHT - height - 1;
+              var barWidth = WIDTH/analyser.frequencyBinCount;
+              var hue = i/analyser.frequencyBinCount * 360;
+
+              drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+              drawContext.fillRect(i * barWidth, offset, barWidth, height);
+            }
+
+            requestAnimationFrame(draw);
+          };
+
+          return draw;
+        };
+        
+        source.connect(context.destination);
+        
+        el.play();
+
+        requestAnimationFrame(visualize(source, document.getElementById('canvas')))
+      }
+    </script>
+  </head>
+  <body>
+    <audio src="audio/beethoven_symph7_mvt2.mp3"
+           controls="controls"
+           id="audio">
+      Your browser doesn't support the audio tag q_q
+    </audio>
+    <canvas id="canvas" height="500" width="1000">
+    </canvas>
+  </body>
+</html>
+
+
+
+
+

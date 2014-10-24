@@ -1,8 +1,7 @@
 # WebAudio Lunch & Learn
 
 
-> ba dum dum dum boop boop ba dum
-> - That techno guy
+> ba dum dum dum boop boop ba dum - That techno guy
 
 
 Here are the files for my lunch and learn! Enjoy :)
